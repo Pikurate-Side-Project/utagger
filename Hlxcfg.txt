@@ -1,0 +1,168 @@
+; ; ; 유태거 설정파일
+
+MEMORY 1
+; 학습사전을 load할 memory 양(MByte), 많을수록 빠름
+; 1로하면 무제한 사용을 의미
+; 0을 하면 사용하지 않음을 의미
+; 그 외에는 MByte로 제한
+; 이하 설명이 없는 옵션은 수정하지 마시기 바랍니다.
+
+;HLX_DIR ../testdic4/
+HLX_DIR ../udic4_3/
+;HLX_DIR ../testA/udicA/
+
+load_uwm 1
+
+load_corpus_poly 1
+tag_poly_uwm 1
+; 실험적 기능. 다의어 태깅(1). 동형이의어태깅(0)
+; load_uwm 1 이여야 작동한다. 
+
+load_multi_lang 1
+load_srl 0
+
+useAD 0
+; HMM태깅: 앞 어절 전체형태소, 뒤 어절의 첫 형태소
+useLD 0
+; HMM태깅: 앞 어절 마지막형태소, 뒤 어절의 첫 형태소
+useEF 1
+; SCP 앞 2개음절, 뒤 어절의 첫 2개 음절
+useAF 1
+; SCP 앞 어절 전체, 뒤 어절 첫 2개 음절
+useFF 1
+; SCP 앞 어절의 마지막 명사, 뒤 어절 첫 용언
+
+hadaVerb 0
+; ~하, ~되 용언에서 '하', '되'를 분리하여 분석하는 것을 어근형(1), 통합하여 분석하는 것을 어간형(0)
+; 울산대 정확률 측정 설정 0
+; 한글->한자로 변환하는 경우에는 이를 어근형(1)으로 하는 것을 강력히 권장 (예: 전통문화연구회 한자로)
+; 2 : 경북대용. 0처럼 어간형(통합)으로 표시한다. 그리고 NNG+XSV인 것이 하나의 용언으로 사전 등제가 안되어 있어도 강제로 통합하여 분석한다.
+;		NNG+ 답/XSA, 되/XSA, 스럽/XSA 는 강제로 하나의 형용사(VA)로 바꾼다. 사람/NNG+답/XSA+게/EC -> 사람답/VA+게/EC
+;		강제 변환은 어깨번호가 항상 없다.
+
+hangul_to_hanja 0
+; 한자변환 안함(0), 변환(1), 병기(2)
+
+hanjaLevel 0 1 2 3 4 5 6 7 8 
+; 한자 변환/병기 시 출력할 한자능력검정 급수
+one_length_hanja_word_no_trans 1
+; 음절 한자어 변환여부 변환(0), 미변환(1) 
+
+hanja_UCS2 1
+; (ucs2le=1 일 때. 한자 출력이 유니코드인 경우) 나라별 한자 한국ANSI(0), 한국(1), 대만(2), 중국(3), 일본(4)
+
+print_original_sentence 1
+; 입력 원문장을 출력 여부. 안함(0), 출력(1)
+print_one_line_sentence 1
+; 태깅 결과를 한 줄로 출력. 안함(0), 출력(1), new line 없이 출력 (2)
+; 한 문장이 한 줄로 처리됨.
+print_ex 0
+; 태깅결과 출력 안함(0), 한줄에 한어절(3)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+cache 0
+; 캐쉬 사용량 조절. 윈도우는 100000 권장. 리눅스 유닉스는 0 권장
+hanja_to_hangul 0
+; 입력된 한자를 한글로 변환 (1), 한자 그대로 둠(0)   * ANSI범위의 한자만 이 기능이 작동합니다. 약 4000자.
+taggingRule 1
+Noun_Attribute 0
+
+HTML_entity 1
+; &abcd; 같은 html entity에 대해서 1개의 형태소/SW 로 처리한다.
+
+separate_compound 0
+; 0 : 명사가 사전에 등재되어있으면 하나의 형태소로 태깅한다. 예) 최고법원
+; 1 : 명사를 더 작은 단위로 나누어 태깅한다. 예) 최고+법원
+
+analyzeMore 3
+; separate_compound가 1일 때 적용된다.
+; 0 : 명사룰 더 작은 단위로 분해할 때, 관련 정보가 구성명사사전(separate_compound 파일)에 있는 경우만 나눈다.
+; 3이상 : 사전에 없더라도 추측으로 분해를 시도한다. 이 값보다 같거나 긴 명사에 대해 분해를 시도한다.
+; 권장값은 3
+; 참고) 추측으로 분해하는 것이기 때문에 정확률이 100%가 아니다.
+
+analyzeMoreNNG 1
+; separate_compound가 1이고 analyzeMore가 3이상일 때 적용된다.
+; 이 옵션은 analyzeMore의 대상이 되는 것에만 적용된다.
+; 0 : NNP만 대상이 된다.
+; 1 : NNG도 대상이 된다.
+; 참고) 사전에 의한 분해에는 항상 NNG와 NNP가 모두 대상이 된다.
+
+analyzeMoreMiniFreq 5
+; analyzeMore가 1일 때 적용된다.
+; 명사를 작은 단위로 추측하여 분해할 때, 더 작은 단위의 명사(구성명사)가 이 값보다 높은 빈도정보를 가지고 있어야 분해가 적용된다.
+; 따라서 작을 수록 분해 될 확률이 올라가지만 정확률은 내려간다.
+; 권장값은 3~30
+
+integrate_XPN_XSN 0
+; 경북대 과제 관련  특수 옵션
+; 0 : 아무것도 안함
+; 1 : 일부 XSN을 제외하고 NNG+XSN은 하나의 NNG로 강제 통합
+
+SN_SW 0
+; 0 : 100/SN+pm/SL
+; 1 : 100/SN+pm/SW
+
+light 2
+; CKMA 분석방법(정확률-속도): 느림(0), 약간느림(1), 빠름(2)
+depen 0
+; 의존관계 알고리즘 변경: UWM사용안함(0), UWM사용(1)
+
+tagging 2
+; 형태소분석(CKMA)만(0), HMM태깅(1), SCP태깅(2), USenseVector(3)
+; HMM태깅에서는 biAD, biLD 파일이 필요함.
+; 각각 아래에 useAD, useLD 옵션에 영향을 받음.
+
+recursive 1
+probability_equation 0
+
+CATE 1
+; 의미매핑정보출력(대화식) 없음(0), 한자-뜻풀이(1), 의미범주/상위어(2)
+
+ucs2le 1
+; 일부 출력에서(특정 함수나 앱) ucs2le 인코딩으로 출력할 것인지 여부. 
+; 대체로 파일로 출력은 ucs2le 옵션에 영향을 받음.
+; 입력이 유니코드인 경우에는 보통 이 옵션과 무관하게 ucs2le로 출력됨.
+
+print_sense_num 1
+; 태깅 결과 출력 시 동형이의어(어깨번호) 삭제(0, UTagger-MR), 출력(1, UTagger-HM)	
+
+print_depen 0
+; 일부 출력에서(winHlx) 의존관계를 출력합니다. biAD.dic 파일과 idx 그리고 biLD.dic idx도 필요합니다.
+; 의존관계 출력 여부 안함(0), 출력(1, UTagger-DP), 규칙포함(2)
+
+print_guess_line 0
+; 미학습어절 별도 출력여부 안함(0), 출력(1)
+preserve_spliter 0
+; 입력 문장에서 어절 사이에 띄어쓰기 모양 유지 여부 안함(0), 유지(1)
+; 띄어스기가 탭이나 공백이 2칸이여도 유지됨.
+preserve_newLine 0
+; 입력 빈줄 출력 여부 안함(0), 유지(1)
+; 줄과 줄 사이에 빈 줄이 여러개여도 유지됨.
+print_end_empty_line 0
+; 모든 출력이 끝나면 마지막에 빈 줄을 출력한다.
+
+test_multi_lang 11
+; 특정 앱에서 다국어 출력. winHlx 같은 특정 앱에서만 작동
+; 1 영어. 2 일어. 3프랑스(불어) 4스페인 5아랍 6몽골 7베트남 8태국 9인도네시아 10러시아 11중국
+
+bisDepen 0
+debug_msg 1
+; 로딩 메세지 등, 각종 추가 정보를 콘솔에 출력한다.
+conEC_VX 10
+conE_E 1
+conJ_J 10
+conN_J 10
+conN_N 10
+conN_XSN 10
+conV_E 10
+conXPN_N 10
+
+one_word_noun_weight 1000
+; 한 줄에, 또는 한번의 입력으로 한 단어만 들어오면 NNG, NNP로 분석할 확률을 높인다.
+; 기본값 0.
+; 단어 길이가 2글자까지만 적용.
+
+TAG_STYLE 0
+; 세종(0), ETRI태그(1)
