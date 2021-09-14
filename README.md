@@ -4,12 +4,13 @@
 * boost: 1.65.1
 
 ## GCC
-* (gcc 버전 컨트롤)[https://promobile.tistory.com/377]
+* [gcc 버전 컨트롤](https://promobile.tistory.com/377)
+* gcc, g++ 모두 7버전 사용
 
 ## BOOST
-* (공식문서)[https://www.boost.org/users/history/version_1_65_1.html]
-```
-> tar -svf boost_1_65_1.tar.gz
+* [공식문서](https://www.boost.org/users/history/version_1_65_1.html)
+```bash
+$ tar -svf boost_1_65_1.tar.gz
 ```
 
 ## ENV
